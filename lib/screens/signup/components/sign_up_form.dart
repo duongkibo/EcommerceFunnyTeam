@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:welcome_demo/components/defaul_button.dart';
+import 'package:welcome_demo/components/default_textfield.dart';
 
 import '../../../size_config.dart';
 
@@ -14,7 +15,8 @@ class _SignUpFormState extends State<SignUpForm> {
   String email;
   String phone;
   String password;
-  String conform_password;
+  String name;
+  String address;
   bool remember = false;
   final List<String> errors = [];
 
@@ -39,40 +41,144 @@ class _SignUpFormState extends State<SignUpForm> {
       child: Column(
         children: [
           Container(
-              width: SizeConfig.screenWidth*0.9,
+              width: SizeConfig.screenWidth * 0.9,
               padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              child: buildNameFormField()),
+              child: DefaultTextfield(
+                type: TextInputType.text,
+                isPassword: false,
+                textHint: 'Enter your name',
+                textLabel: 'Name',
+                functionOnSave: (newValue) => name = newValue,
+                functionOnchanged: (value) {
+                  if (value.isNotEmpty) {
+                    removeError(error: 'Sai');
+                  }
+                  name = value;
+                },
+                functionValidator: (value) {
+                  if (value.isEmpty) {
+                    addError(error: 'kPassNullError');
+                    return "";
+                  }
+                  return null;
+                },
+              )),
           SizedBox(height: getProportionateScreenHeight(10)),
           Container(
-              width: SizeConfig.screenWidth*0.9,
+              width: SizeConfig.screenWidth * 0.9,
               padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              child: buildEmailFormField()),
+              child: DefaultTextfield(
+                type: TextInputType.emailAddress,
+                isPassword: false,
+                textHint: 'Enter your email',
+                textLabel: 'Email',
+                functionOnSave: (newValue) => email = newValue,
+                functionOnchanged: (value) {
+                  if (value.isNotEmpty) {
+                    removeError(error: 'Sai');
+                  }
+                  email = value;
+                },
+                functionValidator: (value) {
+                  if (value.isEmpty) {
+                    addError(error: 'kPassNullError');
+                    return "";
+                  }
+                  return null;
+                },
+              )),
           SizedBox(height: getProportionateScreenHeight(10)),
           Container(
-              width: SizeConfig.screenWidth*0.9,
+              width: SizeConfig.screenWidth * 0.9,
               padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              child: buildPasswordFormField()),
+              child: DefaultTextfield(
+                type: TextInputType.number,
+                isPassword: false,
+                textHint: 'Enter your phone',
+                textLabel: 'Phone',
+                functionOnSave: (newValue) => phone = newValue,
+                functionOnchanged: (value) {
+                  if (value.isNotEmpty) {
+                    removeError(error: 'Sai');
+                  }
+                  phone = value;
+                },
+                functionValidator: (value) {
+                  if (value.isEmpty) {
+                    addError(error: 'kPassNullError');
+                    return "";
+                  }
+                  return null;
+                },
+              )),
           SizedBox(height: getProportionateScreenHeight(10)),
           Container(
-              width: SizeConfig.screenWidth*0.9,
+              width: SizeConfig.screenWidth * 0.9,
               padding: EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              child: buildPhoneFormField()),
+              child: DefaultTextfield(
+                type: TextInputType.text,
+                isPassword: false,
+                textHint: 'Enter your address',
+                textLabel: 'address',
+                functionOnSave: (newValue) => address = newValue,
+                functionOnchanged: (value) {
+                  if (value.isNotEmpty) {
+                    removeError(error: 'Sai');
+                  }
+                  address = value;
+                },
+                functionValidator: (value) {
+                  if (value.isEmpty) {
+                    addError(error: 'kPassNullError');
+                    return "";
+                  }
+                  return null;
+                },
+              )),
+          SizedBox(height: getProportionateScreenHeight(10)),
+          Container(
+              width: SizeConfig.screenWidth * 0.9,
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: DefaultTextfield(
+                type: TextInputType.text,
+                isPassword: false,
+                textHint: 'Enter your password',
+                textLabel: 'Password',
+                functionOnSave: (newValue) => password = newValue,
+                functionOnchanged: (value) {
+                  if (value.isNotEmpty) {
+                    removeError(error: 'Sai');
+                  }
+                  password = value;
+                },
+                functionValidator: (value) {
+                  if (value.isEmpty) {
+                    addError(error: 'kPassNullError');
+                    return "";
+                  }
+                  return null;
+                },
+              )),
           SizedBox(height: getProportionateScreenHeight(10)),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -87,130 +193,13 @@ class _SignUpFormState extends State<SignUpForm> {
           ),
           SizedBox(height: getProportionateScreenHeight(20)),
           Container(
-            width: SizeConfig.screenWidth*0.9,
+            width: SizeConfig.screenWidth * 0.9,
             child: DefaultButton(
-              text: "SIGN UP",
-              press: () {}
+                text: "SIGN UP",
+                press: () {}
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  TextFormField buildNameFormField() {
-    return TextFormField(
-      keyboardType: TextInputType.text,
-      autocorrect: false,
-      onSaved: (newValue) => conform_password = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: 'Sai');
-        } else if (value.isNotEmpty && password == conform_password) {
-          removeError(error: 'Sai');
-        }
-        conform_password = value;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: 'kPassNullError');
-          return "";
-        } else if ((password != value)) {
-          addError(error: 'kMatchPassError');
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Name",
-        hintText: "Enter your Name",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        border: InputBorder.none
-      ),
-    );
-  }
-
-  TextFormField buildPasswordFormField() {
-    return TextFormField(
-      obscureText: true,
-      onSaved: (newValue) => password = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: 'kPassNullError');
-        } else if (value.length >= 8) {
-          removeError(error: 'kShortPassError');
-        }
-        password = value;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: 'kPassNullError');
-          return "";
-        } else if (value.length < 8) {
-          addError(error: 'kShortPassError');
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Password",
-        hintText: "Enter your password",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        border: InputBorder.none,
-      ),
-    );
-  }
-
-  TextFormField buildEmailFormField() {
-    return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      autocorrect: false,
-      onSaved: (newValue) => email = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: 'kEmailNullError');
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: 'kEmailNullError');
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Email",
-        hintText: "Enter your email",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        border: InputBorder.none,
-      ),
-    );
-  }
-
-  TextFormField buildPhoneFormField() {
-    return TextFormField(
-      keyboardType: TextInputType.number,
-      autocorrect: false,
-      onSaved: (newValue) => phone = newValue,
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: 'kEmailNullError');
-        }
-        return null;
-      },
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: 'kEmailNullError');
-          return "";
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Phone",
-        hintText: "Enter your phone",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        border: InputBorder.none,
       ),
     );
   }
