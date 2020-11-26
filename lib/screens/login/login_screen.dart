@@ -1,4 +1,5 @@
 import 'dart:convert';
+// import 'dart:js';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:welcome_demo/components/defaul_button.dart';
 import 'package:welcome_demo/components/form_error.dart';
 import 'package:welcome_demo/screens/home/home.dart';
+import 'package:welcome_demo/screens/signup/signup_screen.dart';
 import 'package:welcome_demo/size_config.dart';
 import '../../constan.dart';
 
@@ -64,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             emailFormField(),
                             SizedBox(height: getProportionateScreenHeight(10)),
                             passwordFormField(),
-                            SizedBox(height: getProportionateScreenHeight(10)),
+                            SizedBox(height: getProportionateScreenHeight(15)),
                             Container(
                               child: GestureDetector(
                                 onTap: () {},
@@ -86,16 +88,22 @@ class _LoginScreenState extends State<LoginScreen> {
                             DefaultButton(
                                 text: 'Login',
                                 press: () {
-                                  // if (_formKey.currentState.validate()) {
-                                  //   _formKey.currentState.save();
-                                  //   // if all are valid then go to home screen
-
-                                  // }
                                   setState(() {
                                     onSignIn();
                                   });
                                 }),
-                            SizedBox(height: getProportionateScreenHeight(100)),
+                            SizedBox(height: getProportionateScreenHeight(20)),
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUpScreen())),
+                              child: Text(
+                                "Haven't got an account? Register here!",
+                                style: TextStyle(color: Colors.blueAccent),
+                              ),
+                            ),
+                            SizedBox(height: getProportionateScreenHeight(70)),
                             Container(
                               child: Column(
                                 children: [
