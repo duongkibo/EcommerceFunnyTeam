@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            SizedBox(height: getProportionateScreenHeight(70)),
+                            SizedBox(height: getProportionateScreenHeight(100)),
                             Container(
                               width: SizeConfig.screenWidth * 0.9,
                               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -297,7 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _tokenFCM = parsed['access_token'];
         if (_tokenFCM != null) {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+              context, MaterialPageRoute(builder: (context) => Home()));
         }
       }
       if (response.statusCode == 401) {
