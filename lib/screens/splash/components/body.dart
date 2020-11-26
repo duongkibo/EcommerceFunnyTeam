@@ -38,7 +38,7 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(milliseconds: 200), (Timer timer) {
+    Timer.periodic(Duration(milliseconds: 3000), (Timer timer) {
       if (_currentPage <= 2) {
         _currentPage++;
       } else {
