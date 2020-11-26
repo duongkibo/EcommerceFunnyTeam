@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:welcome_demo/components/defaul_button.dart';
+import 'package:welcome_demo/screens/login/login_screen.dart';
 import 'package:welcome_demo/screens/splash/components/splash_content.dart';
 import 'package:welcome_demo/size_config.dart';
 
@@ -21,7 +22,7 @@ class _BodyState extends State<Body> {
     },
     {
       "text":
-          "We help pepole conect with store \n around United State of America",
+          "We help people conect with store \n around United State of America",
       "image": "assets/images/splash_2.png"
     },
     {
@@ -37,7 +38,7 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(Duration(milliseconds: 200), (Timer timer) {
+    Timer.periodic(Duration(milliseconds: 3000), (Timer timer) {
       if (_currentPage <= 2) {
         _currentPage++;
       } else {
@@ -51,9 +52,9 @@ class _BodyState extends State<Body> {
       );
     });
   }
+
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
         child: SizedBox(
       width: double.infinity,
@@ -62,7 +63,7 @@ class _BodyState extends State<Body> {
           Expanded(
             flex: 3,
             child: PageView.builder(
-              controller:_pageController ,
+                controller: _pageController,
                 onPageChanged: (value) {
                   setState(() {
                     currentPage = value;
@@ -91,7 +92,10 @@ class _BodyState extends State<Body> {
                     ),
                     DefaultButton(
                       text: "Continue ",
-                      press: (){},
+                      press: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen())),
                     ),
                     Spacer()
                   ],
@@ -104,7 +108,7 @@ class _BodyState extends State<Body> {
 
   AnimatedContainer buildDot({int index}) {
     return AnimatedContainer(
-      duration:  kAnimationDuration,
+      duration: kAnimationDuration,
       margin: EdgeInsets.only(right: 5),
       height: 6,
       width: currentPage == index ? 20 : 6,
@@ -114,5 +118,3 @@ class _BodyState extends State<Body> {
     );
   }
 }
-
-
