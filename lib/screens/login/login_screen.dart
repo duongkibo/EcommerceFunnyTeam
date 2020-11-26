@@ -2,14 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:welcome_demo/components/defaul_button.dart';
-
+import 'package:welcome_demo/components/default_textfield.dart';
 import 'package:welcome_demo/components/form_error.dart';
 import 'package:welcome_demo/screens/home/home.dart';
-
+import 'package:welcome_demo/screens/signup/signup_screen.dart';
 import 'package:welcome_demo/size_config.dart';
 import '../../constan.dart';
 
@@ -47,10 +48,15 @@ class _LoginScreenState extends State<LoginScreen> {
     SizeConfig().init(context);
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.grey[100],
           leading: IconButton(
               icon: Icon(Icons.arrow_back_ios),
               onPressed: () => Navigator.pop(context)),
+          title: Text('LOGIN'),
+          centerTitle: true,
+          elevation: 0,
         ),
+        backgroundColor: Colors.grey[100],
         body: SafeArea(
             child: SizedBox(
                 width: double.infinity,
@@ -62,10 +68,73 @@ class _LoginScreenState extends State<LoginScreen> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            SizedBox(height: getProportionateScreenHeight(20)),
-                            emailFormField(),
+                            SizedBox(height: getProportionateScreenHeight(70)),
+                            Container(
+                              width: SizeConfig.screenWidth * 0.9,
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: DefaultTextfield(
+                                type: TextInputType.emailAddress,
+                                isPassword: false,
+                                textHint: 'Enter your email',
+                                textLabel: 'Email',
+                                functionValidator: (value) {
+                                  if (value.isEmpty) {
+                                    addError(error: kEmailNullError);
+                                  } else if (!emailValidatorRegExp.hasMatch(value)) {
+                                    addError(error: kInvalidEmailError);
+                                  }
+                                  return null;
+                                },
+                                functionOnchanged: (value) {
+                                  if (value.isNotEmpty) {
+                                    removeError(error: kEmailNullError);
+                                  } else if (emailValidatorRegExp.hasMatch(value)) {
+                                    removeError(error: kInvalidEmailError);
+                                  }
+                                  return null;
+                                },
+                                functionOnSave: (newValue) {
+                                  _email = newValue;
+                                },
+                              ),
+                            ),
                             SizedBox(height: getProportionateScreenHeight(10)),
-                            passwordFormField(),
+                            Container(
+                              width: SizeConfig.screenWidth * 0.9,
+                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: DefaultTextfield(
+                                isPassword: true,
+                                textHint: 'Enter your password',
+                                textLabel: 'Password',
+                                functionValidator: (value) {
+                                  if (value.isEmpty) {
+                                    addError(error: kPassNullError);
+                                  } else if (value.length < 6) {
+                                    addError(error: kShortPassError);
+                                  }
+                                  return null;
+                                },
+                                functionOnchanged: (value) {
+                                  if (value.isNotEmpty) {
+                                    removeError(error: kPassNullError);
+                                  } else if (value.length >= 8) {
+                                    removeError(error: kShortPassError);
+                                  }
+                                  return null;
+                                },
+                                functionOnSave: (newValue) {
+                                  _password = newValue;
+                                },
+                              ),
+                            ),
                             SizedBox(height: getProportionateScreenHeight(10)),
                             Container(
                               child: GestureDetector(
@@ -97,22 +166,56 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onSignIn();
                                   });
                                 }),
-                            SizedBox(height: getProportionateScreenHeight(100)),
-                            Container(
-                              child: Column(
-                                children: [
-                                  Text('Or login with social account'),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      RaisedButton(
-                                          child: Text('F'), onPressed: () {}),
-                                      RaisedButton(
-                                          child: Text('G'), onPressed: () {}),
-                                    ],
-                                  )
-                                ],
+                            SizedBox(height: getProportionateScreenHeight(20)),
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUpScreen())),
+                              child: Text(
+                                "Haven't got an account? Register here!",
+                                style: TextStyle(color: Colors.blueAccent),
                               ),
+                            ),
+                            SizedBox(height: getProportionateScreenHeight(100)),
+                            Text('Or sign up with social account'),
+                            SizedBox(height: SizeConfig.screenHeight * 0.02),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  margin: EdgeInsets.symmetric( horizontal: 5),
+                                  padding: EdgeInsets.symmetric(vertical: 3),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: FlatButton(
+                                    onPressed: () {},
+                                    child: SvgPicture.asset(
+                                      'assets/icons/google-icon.svg',
+                                      height: 30,
+                                      width: 30,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                    margin: EdgeInsets.symmetric( horizontal: 5),
+                                    padding: EdgeInsets.symmetric(vertical: 3),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: FlatButton(
+                                      onPressed: () {},
+                                      child: SvgPicture.asset(
+                                        'assets/icons/facebook-2.svg',
+                                        height: 30,
+                                        width: 30,
+                                      ),
+                                    )
+                                ),
+                              ],
                             ),
                             // Spacer()
                           ],
@@ -194,7 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _tokenFCM = parsed['access_token'];
         if (_tokenFCM != null) {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => Home()));
+              context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }
       }
       if (response.statusCode == 401) {
