@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
@@ -222,65 +221,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     )))));
-  }
-
-  TextFormField emailFormField() {
-    return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kEmailNullError);
-        } else if (!emailValidatorRegExp.hasMatch(value)) {
-          addError(error: kInvalidEmailError);
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: 'Email',
-        hintText: "Enter your email",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-      ),
-      onSaved: (newValue) {
-        _email = newValue;
-      },
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kEmailNullError);
-        } else if (emailValidatorRegExp.hasMatch(value)) {
-          removeError(error: kInvalidEmailError);
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField passwordFormField() {
-    return TextFormField(
-      obscureText: !_showPass,
-      validator: (value) {
-        if (value.isEmpty) {
-          addError(error: kPassNullError);
-        } else if (value.length < 6) {
-          addError(error: kShortPassError);
-        }
-        return null;
-      },
-      onChanged: (value) {
-        if (value.isNotEmpty) {
-          removeError(error: kPassNullError);
-        } else if (value.length >= 8) {
-          removeError(error: kShortPassError);
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-          labelText: 'Password',
-          hintText: 'Enter your password',
-          floatingLabelBehavior: FloatingLabelBehavior.always),
-      onSaved: (newValue) {
-        _password = newValue;
-      },
-    );
   }
 
   Future onSignIn() async {

@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:welcome_demo/components/defaul_button.dart';
 import 'package:welcome_demo/components/default_textfield.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:welcome_demo/screens/login/login_screen.dart';
+import '../../../components/form_error.dart';
+import '../../../constan.dart';
 import '../../../size_config.dart';
 
 
@@ -11,13 +16,15 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-  final _formKey = GlobalKey<FormState>();
   String email;
   String phone;
   String password;
   String name;
   String address;
   bool remember = false;
+
+
+  final _formKey = GlobalKey<FormState>();
   final List<String> errors = [];
 
   void addError({String error}) {
@@ -39,7 +46,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return Form(
       key: _formKey,
       child: Column(
-        children: [
+        children: <Widget>[
           Container(
               width: SizeConfig.screenWidth * 0.9,
               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -55,14 +62,13 @@ class _SignUpFormState extends State<SignUpForm> {
                 functionOnSave: (newValue) => name = newValue,
                 functionOnchanged: (value) {
                   if (value.isNotEmpty) {
-                    removeError(error: 'Sai');
+                    removeError(error: kNamelNullError);
                   }
                   name = value;
                 },
                 functionValidator: (value) {
                   if (value.isEmpty) {
-                    addError(error: 'kPassNullError');
-                    return "";
+                    addError(error: kNamelNullError);
                   }
                   return null;
                 },
@@ -83,14 +89,15 @@ class _SignUpFormState extends State<SignUpForm> {
                 functionOnSave: (newValue) => email = newValue,
                 functionOnchanged: (value) {
                   if (value.isNotEmpty) {
-                    removeError(error: 'Sai');
+                    removeError(error: kInvalidEmailError);
                   }
                   email = value;
                 },
                 functionValidator: (value) {
                   if (value.isEmpty) {
-                    addError(error: 'kPassNullError');
-                    return "";
+                    addError(error: kEmailNullError);
+                  } else if (emailValidatorRegExp.hasMatch(value)) {
+                    removeError(error: kInvalidEmailError);
                   }
                   return null;
                 },
@@ -111,14 +118,13 @@ class _SignUpFormState extends State<SignUpForm> {
                 functionOnSave: (newValue) => phone = newValue,
                 functionOnchanged: (value) {
                   if (value.isNotEmpty) {
-                    removeError(error: 'Sai');
+                    removeError(error: kPhoneNumberNullError);
                   }
                   phone = value;
                 },
                 functionValidator: (value) {
                   if (value.isEmpty) {
-                    addError(error: 'kPassNullError');
-                    return "";
+                    addError(error: kPhoneNumberNullError);
                   }
                   return null;
                 },
@@ -139,14 +145,13 @@ class _SignUpFormState extends State<SignUpForm> {
                 functionOnSave: (newValue) => address = newValue,
                 functionOnchanged: (value) {
                   if (value.isNotEmpty) {
-                    removeError(error: 'Sai');
+                    removeError(error: kAddressNullError);
                   }
                   address = value;
                 },
                 functionValidator: (value) {
                   if (value.isEmpty) {
-                    addError(error: 'kPassNullError');
-                    return "";
+                    addError(error: kAddressNullError);
                   }
                   return null;
                 },
@@ -167,14 +172,13 @@ class _SignUpFormState extends State<SignUpForm> {
                 functionOnSave: (newValue) => password = newValue,
                 functionOnchanged: (value) {
                   if (value.isNotEmpty) {
-                    removeError(error: 'Sai');
+                    removeError(error: kPassNullError);
                   }
                   password = value;
                 },
                 functionValidator: (value) {
                   if (value.isEmpty) {
-                    addError(error: 'kPassNullError');
-                    return "";
+                    addError(error: kPassNullError);
                   }
                   return null;
                 },
@@ -192,15 +196,73 @@ class _SignUpFormState extends State<SignUpForm> {
             ],
           ),
           SizedBox(height: getProportionateScreenHeight(20)),
+          FormError(errors: errors),
+          SizedBox(height: getProportionateScreenHeight(20)),
           Container(
             width: SizeConfig.screenWidth * 0.9,
             child: DefaultButton(
                 text: "SIGN UP",
-                press: () {}
+                press: () {
+                  setState(() {
+                    onSignUp();
+                  });
+                }
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future onSignUp() async{
+    if (_formKey.currentState.validate()) {
+      _formKey.currentState.save();
+      // if all are valid then go to home screen
+    }
+    if(_formKey.currentState.validate()){
+      String url = 'http://app.baomoiday.net/public/api/auth/create?reg_email=$email&reg_password=$password&reg_first_name=$name&reg_address1=$address&reg_phone=$phone';
+      Map<String, String> headers = {"Content-type": "application/json"};
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: jsonEncode(<String, String>{
+          'reg_first_name': name,
+          'reg_email': email,
+          'reg_password': password,
+          'reg_address1': address,
+          'reg_phone': phone,
+        }),
+      );
+      if (response.statusCode == 200) {
+        print(response.body);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      }
+      if (response.statusCode == 401) {
+        return showDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                elevation: 3.0,
+                actionsOverflowDirection: VerticalDirection.down,
+                title: Text(
+                  'Sign Up Failed!',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                content: Text(
+                  'Your informations is incorrect!\nPlease type again.',
+                  textAlign: TextAlign.justify,
+                  softWrap: true,
+                ),
+                actions: [
+                  FlatButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('OK',
+                          style: TextStyle(color: Color(0xFFFF7643))))
+                ],
+              );
+            });
+      }
+    }
   }
 }
