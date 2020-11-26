@@ -1,4 +1,4 @@
-# welcome_demo
+# Ecommerce app by FunnyTeam from VMO 
 
 A new Flutter application.
 

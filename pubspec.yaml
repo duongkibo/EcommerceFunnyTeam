@@ -23,7 +23,11 @@ environment:
 dependencies:
   #provider: ^4.3.1
   flutter_statusbarcolor: ^0.2.3
+<<<<<<< HEAD
 #  flutter_svg: any
+=======
+  flutter_svg: any
+>>>>>>> origin/main
   flutter:
     sdk: flutter
 
