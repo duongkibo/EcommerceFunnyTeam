@@ -10,6 +10,7 @@ import 'package:welcome_demo/components/defaul_button.dart';
 import 'package:welcome_demo/components/default_textfield.dart';
 import 'package:welcome_demo/components/form_error.dart';
 import 'package:welcome_demo/screens/home/home.dart';
+import 'package:welcome_demo/screens/signup/signup_screen.dart';
 import 'package:welcome_demo/size_config.dart';
 import '../../constan.dart';
 
@@ -67,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            SizedBox(height: getProportionateScreenHeight(20)),
+                            SizedBox(height: getProportionateScreenHeight(70)),
                             Container(
                               width: SizeConfig.screenWidth * 0.9,
                               padding: EdgeInsets.symmetric(horizontal: 10),
@@ -165,6 +166,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onSignIn();
                                   });
                                 }),
+                            SizedBox(height: getProportionateScreenHeight(20)),
+                            GestureDetector(
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SignUpScreen())),
+                              child: Text(
+                                "Haven't got an account? Register here!",
+                                style: TextStyle(color: Colors.blueAccent),
+                              ),
+                            ),
                             SizedBox(height: getProportionateScreenHeight(100)),
                             Text('Or sign up with social account'),
                             SizedBox(height: SizeConfig.screenHeight * 0.02),
