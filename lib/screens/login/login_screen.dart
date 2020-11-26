@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 import 'package:welcome_demo/components/defaul_button.dart';
+
 import 'package:welcome_demo/components/form_error.dart';
 import 'package:welcome_demo/screens/home/home.dart';
+
 import 'package:welcome_demo/size_config.dart';
 import '../../constan.dart';
 
@@ -192,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _tokenFCM = parsed['access_token'];
         if (_tokenFCM != null) {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+              context, MaterialPageRoute(builder: (context) => Home()));
         }
       }
       if (response.statusCode == 401) {

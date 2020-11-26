@@ -33,6 +33,7 @@ dependencies:
   cupertino_icons: ^1.0.0
   http: any
   shared_preferences: ^0.5.12+4
+  bubble_bottom_bar: ^1.2.0
 
 dev_dependencies:
   flutter_test:
