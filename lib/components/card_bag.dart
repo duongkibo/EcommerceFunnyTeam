@@ -27,6 +27,8 @@ class CardBag extends StatelessWidget{
               width: SizeConfig.screenWidth*0.3,
             ),
             Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
                   children: <Widget>[
@@ -37,7 +39,7 @@ class CardBag extends StatelessWidget{
                         fontSize: 20.0,
                       ),
                     ),
-                    SizedBox(width: getPropotionateScreenWitdh(SizeConfig.screenWidth*0.2),),
+                    SizedBox(width: getPropotionateScreenWitdh(SizeConfig.screenWidth*0.18),),
                     IconButton(
                         icon: Icon(Icons.more_vert),
                         onPressed: functionMenu
@@ -49,7 +51,6 @@ class CardBag extends StatelessWidget{
                     Text('Color: '),Text(color, style: TextStyle(fontWeight: FontWeight.bold),),
                     Text('  '),
                     Text('Size: '),Text(size, style: TextStyle(fontWeight: FontWeight.bold),),
-                    SizedBox(width: getPropotionateScreenWitdh(SizeConfig.screenWidth*0.2),),
                   ],
                 ),
                 Row(
@@ -76,7 +77,7 @@ class CardBag extends StatelessWidget{
                         child:  Icon(Icons.add),
                       ),
                     ),
-                    SizedBox(width: getPropotionateScreenWitdh(SizeConfig.screenWidth*0.15),),
+                    SizedBox(width: getPropotionateScreenWitdh(SizeConfig.screenWidth*0.13),),
                     Text(
                       cost,
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),

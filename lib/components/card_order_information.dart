@@ -24,6 +24,8 @@ class CardOrderInformation extends StatelessWidget{
               width: SizeConfig.screenWidth*0.3,
             ),
             Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
                   children: <Widget>[
